@@ -18,16 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Test SSH Connection
-      run: |
-        ssh -o StrictHostKeyChecking=no -p 22 ${secrets.SERVER_USERNAME}@${secrets.SERVER_HOST} 'echo "SSH Connection Successful"'
-
+    
     - name: Debug Environment
       run: |
         echo "Checking server connection details..."
-        echo "Server Host Length: ${{ secrets.SERVER_HOST != '' && secrets.SERVER_HOST != null }}"
-        echo "Username Length: ${{ secrets.SERVER_USERNAME != '' && secrets.SERVER_USERNAME != null }}"
-        echo "Password Length: ${{ secrets.SERVER_PASSWORD != '' && secrets.SERVER_PASSWORD != null }}"
+        echo "Server Host Length: ${{ env.SERVER_HOST != '' && env.SERVER_HOST != null }}"
+        echo "Username Length: ${{ env.SERVER_USERNAME != '' && env.SERVER_USERNAME != null }}"
+        echo "Password Length: ${{ env.SERVER_PASSWORD != '' && env.SERVER_PASSWORD != null }}"
       
     - name: Checkout code
       uses: actions/checkout@v2
