@@ -16,6 +16,22 @@ from django.conf import settings
 from bot.models import Registration
 
 from asgiref.sync import sync_to_async
+SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
+]
+CREDENTIALS_FILE = os.path.join(settings.BASE_DIR, "credentials.json")
+SPREADSHEET_ID = getattr(
+    settings, "GOOGLE_SHEETS_SPREADSHEET_ID", "your_spreadsheet_id_here"
+)
+GROUP_CHAT_ID = getattr(settings, "GROUP_CHAT_ID", "your_group_chat_id_here")
+
+
+def get_sheet():
+    print(CREDENTIALS_FILE,SPREADSHEET_ID)
+    credentials = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
+    client = gspread.authorize(credentials)
+    return client.open_by_key(SPREADSHEET_ID).sheet1
 
 
 def save_to_sheets(registration_time, telegram_id, telegram_username, full_name, phone_number, about, resume_file_name, registration_id, resume_telegram_link):
@@ -67,21 +83,6 @@ logger = logging.getLogger(__name__)
 FULL_NAME, PHONE_NUMBER, PHONE_VERIFICATION, ABOUT, RESUME, CONFIRMATION = range(6)
 
 # Google Sheets setup
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-]
-CREDENTIALS_FILE = os.path.join(settings.BASE_DIR, "credentials.json")
-SPREADSHEET_ID = getattr(
-    settings, "GOOGLE_SHEETS_SPREADSHEET_ID", "your_spreadsheet_id_here"
-)
-GROUP_CHAT_ID = getattr(settings, "GROUP_CHAT_ID", "your_group_chat_id_here")
-
-
-def get_sheet():
-    credentials = Credentials.from_service_account_file(CREDENTIALS_FILE, scopes=SCOPES)
-    client = gspread.authorize(credentials)
-    return client.open_by_key(SPREADSHEET_ID).sheet1
 
 
 os.makedirs(os.path.join(settings.BASE_DIR, "downloads"), exist_ok=True)
