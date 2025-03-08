@@ -13,6 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
+    - name: Debug Environment
+    run: |
+      echo "Checking server connection details..."
+      echo "Server Host Length: ${{ length(secrets.SERVER_HOST) }}"
+      echo "Username Length: ${{ length(secrets.SERVER_USERNAME) }}"
+      echo "Password Length: ${{ length(secrets.SERVER_PASSWORD) }}"
+      
     - name: Checkout code
       uses: actions/checkout@v2
       
