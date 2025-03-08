@@ -14,11 +14,11 @@ jobs:
     
     steps:
     - name: Debug Environment
-    run: |
-      echo "Checking server connection details..."
-      echo "Server Host Length: ${{ length(secrets.SERVER_HOST) }}"
-      echo "Username Length: ${{ length(secrets.SERVER_USERNAME) }}"
-      echo "Password Length: ${{ length(secrets.SERVER_PASSWORD) }}"
+      run: |
+        echo "Checking server connection details..."
+        echo "Server Host Length: ${{ secrets.SERVER_HOST != '' && secrets.SERVER_HOST != null }}"
+        echo "Username Length: ${{ secrets.SERVER_USERNAME != '' && secrets.SERVER_USERNAME != null }}"
+        echo "Password Length: ${{ secrets.SERVER_PASSWORD != '' && secrets.SERVER_PASSWORD != null }}"
       
     - name: Checkout code
       uses: actions/checkout@v2
@@ -29,6 +29,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
+        port: 22
         script: |
           cd /var/www/hr-bot/
           git pull origin main
@@ -36,7 +37,7 @@ jobs:
           pip install -r requirements.txt
           python3 manage.py migrate
           python3 manage.py collectstatic --noinput
-          sudo systemctl restart hrbot
+          sudo systemctl restart hrbot.socket hrbot.service
           sudo systemctl restart hrbot-bot
           sudo systemctl restart nginx
           echo "Deployment completed successfully!"
