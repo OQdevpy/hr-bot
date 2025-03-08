@@ -37,7 +37,8 @@ jobs:
         password: ${{ env.SSH_PASSWORD }}
         port: 22
         script: |
-          cd /var/www/hr-bot/
+          ls /var/www
+          cd /var/www/hr-bot
           git pull origin main
           source venv/bin/activate
           pip install -r requirements.txt
