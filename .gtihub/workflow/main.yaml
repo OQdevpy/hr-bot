@@ -29,7 +29,7 @@ jobs:
           pip install -r requirements.txt
           python3 manage.py migrate
           python3 manage.py collectstatic --noinput
-          sudo systemctl restart gunicorn
-          sudo systemctl restart bot
+          sudo systemctl restart hrbot
+          sudo systemctl restart hrbot-bot
           sudo systemctl restart nginx
           echo "Deployment completed successfully!"
