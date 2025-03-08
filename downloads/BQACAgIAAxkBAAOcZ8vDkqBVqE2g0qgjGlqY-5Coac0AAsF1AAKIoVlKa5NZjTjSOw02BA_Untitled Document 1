@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+{% load auction_filters %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+  <div class="container-fluid ps-0 pe-0">
+    <div class="row navbar-bg">
+      <div class="d-flex flex-lg-row flex-column justify-content-center pt-3">
+        <div class="col-12 col-md-12 col-lg-4 p-md-3 mb-3" id="about-us">
+          <h1 class="text-dark fw-bold">Цифровая платформа по реализации транспортных средств и коммерческой техники с пробегом</h1>
+          <br />
+          <br />
+          <p>
+            <span class="fw-medium">Наш сервис решает все проблемы, возникающие при продаже автомобилей с пробегом.</span>
+            <br />
+            <br />
+            <span class="fw-medium">Мы стремимся, чтобы этот процесс стал максимально простым, быстрым и обоюдно честным.</span>
+          </p>
+          <div class="col-12 p-md-3 d-flex justify-content-md-end">
+            <a href="{% url 'accounts:auth_register' %}"
+               class="btn btn-outline-westside-light btn-lg">Зарегистрироваться</a>
+          </div>
+        </div>
+        <div class="col-12 col-md-12 col-lg-6 p-md-3 mb-3 index-wrapper">
+          <div class="swiper index-swiper index-wrapper">
+            <div class="swiper-wrapper">
+              {% for item in auctions %}
+                <div class="swiper-slide index-slide">
+                  <div class="card h-100">
+                    <img src="{{ item.preview }}"
+                         class="card-img-top index-img-card"
+                         alt="Изображение аукциона">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ item.auction.brand.name }} {{ item.auction.model.name }}</h5>
+                      <div>
+                        <span class="fs-8">{{ item.auction.car_milage|format_positive_integer }} км</span>
+                        <span class="fs-8">|</span>
+                        <span class="fs-8">{{ item.auction.car_year }} г.</span>
+                      </div>
+                      <div>
+                        <span class="fs-8">Нач. цена:</span>
+                        <span class="fs-8">{{ item.auction.starting_price|format_positive_integer }} ₽</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-pagination index-slider-pagination"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="py-5 bg-white">
+      <div class="container">
+        <h2 class="text-center mb-5">Нам доверяют продавцы по всей России</h2>
+        
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center">
+          {% for logo in client_logos %}
+            <div class="col">
+              <div class="client-logo-item p-3 h-100 d-flex align-items-center justify-content-center">
+                {% if logo.url %}
+                  <a href="{{ logo.url }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="client-logo img-fluid">
+                  </a>
+                {% else %}
+                  <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="client-logo img-fluid">
+                {% endif %}
+              </div>
+            </div>
+          {% empty %}
+            <!-- Будет показано, если нет логотипов -->
+            <div class="col-12 text-center text-muted">
+              <p>Скоро здесь появятся наши клиенты</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    <div class="row bg-body-secondary"
+         style="background-color:#FD920F !important">
+      <div class="d-flex flex-lg-row flex-column justify-content-center pt-3">
+        <div class="col-12 col-lg-4 p-md-3">
+          <h2 class="text-light">
+            Подробные отчеты о состоянии автомобилей
+          </h3>
+          <br />
+          <p class="mb-3 text-light fs-5">
+            Более 30 фотографий со всех ракурсов, видео, проверка ЛКП толщиномером, описание комплектации, шин и повреждений, техническая проверка и история обслуживания, сканы ПТС и СТС
+          </p>
+        </div>
+        <div class="col-12 col-lg-6 p-md-3 fs-5 align-content-center">
+          <div class="d-flex flex-wrap">
+            <div class="col-12 col-xl-6">
+              <span class="index-report">
+                <img src="./media/passanger-car.png"  width="50">
+                <span class="ps-4 text-light">Легковой автомобиль</span>
+              </span>
+            </div>
+            <div class="col-12 col-xl-6">
+              <span class="index-report">
+                <img src="./media/commercial-car.png"  width="50">
+                <span class="ps-4 text-light">Легковой коммерческий транспорт</span>
+              </span>
+            </div>
+            <div class="col-12 col-xl-6">
+              <span class="index-report">
+                <img src="./media/truck-car.png"  width="50">
+                <span class="ps-4 text-light">Грузовой автомобиль</span>
+              </span>
+            </div>
+            <div class="col-12 col-xl-6">
+              <span class="index-report">
+                <img src="./media/special-car.png" width="50">
+                <span class="ps-4 text-light">Спецтехника</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <section class="py-5 bg-light" id="process">
+      <div class="container">
+        <h2 class="text-center mb-5">Как купить</h2>
+        <div class="row g-4">
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body d-flex flex-column text-center small-gradient-bg">
+                <h4 class="card-title fw-medium mb-3">Регистрация</h4>
+                <div class="flex-grow-1">
+                  <img src="./media/laptop-index.png"
+                       alt="Автомобиль"
+                       class="img-fluid mb-4" />
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <p class="fw-medium fs-6">Получите доступ</p>
+                <p class="text-muted mb-0 fs-8">
+                  Быстрая онлайн регистрация.
+                  <br />
+                  ЭЦП не требуется.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body d-flex flex-column text-center small-gradient-bg">
+                <div class="flex-grow-1">
+                  <div class="d-flex flex-row flex-wrap gap-2 justify-content-center mb-3">
+                    <span class="buy-card-input-tag">Один владелец</span>
+                    <span class="buy-card-input-tag">ПТС оригинал</span>
+                  </div>
+                  <img src="./media/car-for-register-page.png"
+                       alt="Автомобиль"
+                       class="img-fluid mb-4" />
+                  <div class="mb-3">
+                    <div class="text-muted">Текущая ставка</div>
+                    <div class="fs-4 fw-bold">940 000 ₽</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <p class="fw-medium fs-6">Участвуйте в торгах</p>
+                <p class="text-muted mb-0 fs-8">Выбирайте автомобиль и делайте ставки, следите за ходом торгов в реальном времени.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body d-flex flex-column text-center small-gradient-bg">
+                <div class="flex-grow-1">
+                  <div class="d-flex flex-row flex-wrap gap-2 justify-content-center mb-3">
+                    <span class="buy-card-input-tag">Ваша ставка выиграла!</span>
+                  </div>
+                  <img src="./media/car-for-register-page.png"
+                       alt="Автомобиль"
+                       class="img-fluid mb-4" />
+                  <div class="mb-3">
+                    <div class="text-muted">Финальная цена</div>
+                    <div class="fs-4 fw-bold">950 000 ₽</div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <p class="fw-medium fs-6">Выигрывайте и оплачивайте</p>
+                <p class="text-muted mb-0 fs-8">Предложите лучшую ставку. Оплатите лот по сформированным документам без рисков.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body d-flex flex-column text-center small-gradient-bg">
+                <div class="flex-grow-1">
+                  <div class="d-flex flex-wrap flex-row gap-2 justify-content-center mb-3">
+                    <span class="buy-card-input-tag">Автомобиль готов к получению</span>
+                  </div>
+                  <img src="./media/car-for-register-page.png"
+                       alt="Автомобиль"
+                       class="img-fluid mb-4" />
+                  <div class="mb-3">
+                    <h4 class="fw-medium mb-4">
+                      Поздравляем!
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer bg-white border-0">
+                <p class="fw-medium fs-6">Получите автомобиль</p>
+                <p class="text-muted mb-0 fs-8">
+                  Заберите а/м самостоятельно в удобное время или воспользуйтесь логистическим сервисом.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    
+    <div class="row" style="background-color:#9104FC;">
+      <div class="d-flex flex-md-row flex-column text-center pt-3">
+        <div class="col-12 p-md-3">
+          <h1 class="text-white">Готовы получить доступ к платформе?</h1>
+        </div>
+      </div>
+      <div class="d-flex flex-md-row flex-column p-3 justify-content-center">
+        <div class="d-flex flex-md-row flex-column col-12 p-3 justify-content-evenly">
+          <a href="{% url 'accounts:auth_register' %}"
+             class="btn btn-light btn-lg mb-3">Зарегистрироваться</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-5 bg-white">
+    <div class="container">
+      <h2 class="text-center mb-5">У нас покупают ведущие дилеры</h2>
+      
+      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 justify-content-center">
+        {% for logo in diller_logos %}
+          <div class="col">
+            <div class="client-logo-item p-3 h-100 d-flex align-items-center justify-content-center">
+              {% if logo.url %}
+                <a href="{{ logo.url }}" target="_blank" rel="noopener noreferrer">
+                  <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="client-logo img-fluid">
+                </a>
+              {% else %}
+                <img src="{{ logo.logo.url }}" alt="{{ logo.name }}" class="client-logo img-fluid">
+              {% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <!-- Будет показано, если нет логотипов -->
+          <div class="col-12 text-center text-muted">
+            <p>Скоро здесь появятся  дилеры</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+
+
+<div class="row navbar-bg">
+    <div class="d-flex flex-lg-row flex-column justify-content-between pt-3">
+      <!-- Чап томондаги контейнер, кенгроқ -->
+      <div class="col-12 col-md-10 p-md-3 mb-3" id="about-us">
+        <h5 class="text-dark fw-bold mb-4">Цифровая платформа по реализации транспортных средств и коммерческой техники
+          с пробегом</h5>
+
+        <!-- Матнни бир қаторда чиқариш учун style қўшамиз -->
+        <div class="row">
+          <div class="col-12">
+            <p class="mb-4">
+              <span class="fw-medium">Наш сервис решает все проблемы, возникающие при продаже автомобилей с пробегом. Мы
+                стремимся, чтобы этот процесс стал максимально простым, быстрым и обоюдно честным.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Тугмани ўртага жойлаштириш -->
+        <div class="row">
+          <div class="col-12 text-center mt-4 mb-5">
+            <a href="{% url 'accounts:auth_register' %}" class="btn btn-warning btn-lg px-4 py-2">Зарегистрироваться</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Логони ўнгроққа суриш, торроқ -->
+      <div class="col-12 col-md-2 mb-3 mb-md-0 text-center text-md-end pe-4">
+        <img src="{% static 'img/asm_auto.svg' %}" alt="ASM Auto" class="img-fluid" style="max-height: 80px;">
+      </div>
+    </div>
+  </div>
+  

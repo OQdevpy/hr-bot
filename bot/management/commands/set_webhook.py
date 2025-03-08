@@ -1,4 +1,7 @@
+# bot/management/commands/set_webhook.py
+
 import logging
+import asyncio
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from telegram.ext import Application
@@ -28,7 +31,12 @@ class Command(BaseCommand):
             
             # Set webhook
             webhook_url = f"{webhook_url.rstrip('/')}/bot/webhook/"
-            application.bot.set_webhook(webhook_url)
+            
+            async def set_webhook():
+                await application.bot.set_webhook(webhook_url)
+            
+            # Run the async function
+            asyncio.run(set_webhook())
             
             self.stdout.write(self.style.SUCCESS(f'Webhook set to: {webhook_url}'))
             

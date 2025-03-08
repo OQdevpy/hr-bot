@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure--&!4n=x%zzvch$szs%zmpzio%lvcc(@t=jwk8$9!00^&e+ex=&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -124,9 +124,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-TELEGRAM_BOT_TOKEN = 'your_telegram_bot_token_here'  # Replace with your actual bot token
+TELEGRAM_BOT_TOKEN = '7454177892:AAF2crdQWyXeJOwiINNCK4FZmWlA9JPcrPk'  # Replace with your actual bot token
 
 # Google Sheets settings
-GOOGLE_SHEETS_CREDENTIALS_FILE = os.path.join(BASE_DIR, 'credentials.json')
-GOOGLE_SHEETS_SPREADSHEET_ID = 'your_spreadsheet_id_here'  # Replace with your actual spreadsheet ID
-GROUP_CHAT_ID = 'your_group_chat_id_here'  # Replace with your actual group chat ID
+GOOGLE_SHEETS_CREDENTIALS_FILE = BASE_DIR / 'credentials.json'
+GOOGLE_SHEETS_SPREADSHEET_ID = '1akH1zEONGmbCYs2pDMsJj9_yxCbl8YpkhCjMjxRl3SI'  # Replace with your actual spreadsheet ID
+GROUP_CHAT_ID = '-1002283204553'  # Replace with your actual group chat ID
