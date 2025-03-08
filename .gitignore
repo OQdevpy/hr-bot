@@ -5,3 +5,4 @@ __pycache__/
 
 # for db
 *.sqlite3
+credentials.json
